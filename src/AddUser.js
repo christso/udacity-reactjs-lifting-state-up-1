@@ -2,23 +2,41 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class AddUser extends React.Component {
-constructor(props) {
-  super(props);
-  this.state = {
-    user: {
-      username: '',
-      firstName: '',
-      lastName: '',
-      gamesPlayedCount: 0
-    }
-  };
-  this.handleChange.bind(this);
-  this.handleSubmit.bind(this);
-}
+  constructor(props) {
+    super(props);
+    this.state = {
+      errorMessage: '',
+      user: {
+        username: '',
+        firstName: '',
+        lastName: '',
+        gamesPlayedCount: 0
+      }
+    };
+    this.handleChange.bind(this);
+    this.handleSubmit.bind(this);
+  }
+
+  isDisabled() {
+    const user = this.state.user;
+    return !user 
+      || user.username === ''
+      || user.firstName === ''
+      || user.lastName === '';
+  }
 
   handleSubmit(event) {
-    this.props.onAddUser(this.state.user);
     event.preventDefault();
+
+    const users = this.props.users;
+    const user = this.state.user;
+    if (users.findIndex(u => user.username === u.username) !== -1) {
+      this.setState(() => ({ errorMessage: 'username ' + user.username + ' already exists' }));
+      return;
+    }
+
+    this.setState(() => ({ errorMessage: '' }));
+    this.props.onAddUser(this.state.user);
   }
 
   handleChange(event) {
@@ -36,7 +54,8 @@ constructor(props) {
 
   render() {
     const { username, firstName, lastName, gamesPlayedCount } = this.state.user;
-    console.log('username = ', username);
+    const errorMessage = this.state.errorMessage === '' ? <div></div> 
+    : <div className="error-text">Error: {this.state.errorMessage}</div>;
     return (
       <div>
         <h2>Add User</h2>
@@ -69,13 +88,17 @@ constructor(props) {
               value={gamesPlayedCount}
               onChange={e => this.handleChange(e)}
           />
-          <button>Add</button>
+          <button disabled={this.isDisabled()}>Add</button>
         </form>
-
+        {errorMessage}
       </div>
     );
 
   }
+}
+
+AddUser.propTypes = {
+  onAddUser: PropTypes.func.isRequired
 }
 
 export default AddUser;

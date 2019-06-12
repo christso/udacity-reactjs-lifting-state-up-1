@@ -17,7 +17,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorMessage: null,
       users: [
         { username: 'christso', firstName: 'Christopher', lastName: 'Tso', gamesPlayedCount: 0 },
         { username: 'myang', firstName: 'Molly', lastName: 'Yang', gamesPlayedCount: 1 }
@@ -27,31 +26,20 @@ class App extends Component {
   }
 
   onAddUser(user) {
-    if (this.state.users.findIndex(u => user.username === u.username) !== -1) {
-      this.setState(() => {
-        return { errorMessage: 'username ' + user.username + ' already exists' };
-      });
-      return;
-    }
-
     this.setState((state) => {
       return { 
-        errorMessage: null,
         users: [...this.state.users, user] };
     });
   }
 
   render() {
-    const errorMessage = this.state.errorMessage == null ? <div></div> 
-    : <div className="error-text">Error: {this.state.errorMessage}</div>;
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
-        <AddUser onAddUser={(user) => this.onAddUser(user)} />
-        {errorMessage}
+        <AddUser users={this.state.users} onAddUser={(user) => this.onAddUser(user)} />
         <UserList users={this.state.users} />
         <User />
       </div>
