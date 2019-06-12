@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 
-function User(props) {
+const User = props => {
   const user = props.data;
   const showGamesPlayed = props.showGamesPlayed;
   if (user == null) {
     return <div></div>
   }
   return (
-    <div>{user.username} played {showGamesPlayed ? "*" : user.gamesPlayedCount} games</div>
+    <li className="user">
+      <p>Username: {user.username}</p>
+      <p>Number of Games Played: {showGamesPlayed ? "*" : user.gamesPlayedCount}</p>
+    </li>
   );
 }
 

@@ -5,28 +5,36 @@ import PropTypes from 'prop-types';
 class UserList extends React.Component {
   constructor(props) {
     super(props);
-    this.handleShowGamesClicked.bind(this);
+    // this.handleToggleGamesPlayed.bind(this);
     this.state = {
       showGamesPlayed: true
     };
   }
 
-  handleShowGamesClicked(e) {
-    e.preventDefault();
-    this.setState((state) => ({showGamesPlayed: !state.showGamesPlayed}));
+  // set this context to UserList by using const instead of function
+  handleToggleGamesPlayed = () => {
+    // e.preventDefault();
+    this.setState((oldState) => ({showGamesPlayed: !oldState.showGamesPlayed}));
   }
 
   render() {
-    const userList = this.props.users.map(user => {
+    const users = this.props.users;
+    const userList = users.map(user => {
       return <User key={user.username} data={user} showGamesPlayed={this.state.showGamesPlayed} />
     });
+    
+    const gamesPlayedButton = (<div>
+      <button className="smallButton" onClick={this.handleToggleGamesPlayed}>
+        {this.state.showGamesPlayed ? 'Hide' : 'Show'} the Number of Games Played
+      </button>
+    </div>)
+
     return (
       <div>
         <h2>
           UserList
         </h2>
-        <a href="#" onClick={(e) => this.handleShowGamesClicked(e)}>
-        {this.state.showGamesPlayed ? "Show the Number of Games Played" : "Hide the Number of Games Played"}</a>
+        {users && users.length > 0 ? gamesPlayedButton : ''}
         <ol>
           {userList} 
         </ol>
