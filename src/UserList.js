@@ -7,18 +7,18 @@ class UserList extends React.Component {
     super(props);
     this.handleShowGamesClicked.bind(this);
     this.state = {
-      hideGamesPlayed: false
+      showGamesPlayed: true
     };
   }
 
   handleShowGamesClicked(e) {
     e.preventDefault();
-    this.setState((state) => ({hideGamesPlayed: !state.hideGamesPlayed}));
+    this.setState((state) => ({showGamesPlayed: !state.showGamesPlayed}));
   }
 
   render() {
     const userList = this.props.users.map(user => {
-      return <User key={user.username} data={user} hideGamesPlayed={this.state.hideGamesPlayed} />
+      return <User key={user.username} data={user} showGamesPlayed={this.state.showGamesPlayed} />
     });
     return (
       <div>
@@ -26,7 +26,7 @@ class UserList extends React.Component {
           UserList
         </h2>
         <a href="#" onClick={(e) => this.handleShowGamesClicked(e)}>
-        {this.state.hideGamesPlayed ? "Show the Number of Games Played" : "Hide the Number of Games Played"}</a>
+        {this.state.showGamesPlayed ? "Show the Number of Games Played" : "Hide the Number of Games Played"}</a>
         <ol>
           {userList} 
         </ol>
