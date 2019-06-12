@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import User from './User';
+import PropTypes from 'prop-types';
 
 class UserList extends React.Component {
   constructor(props) {
@@ -26,13 +27,17 @@ class UserList extends React.Component {
         </h2>
         <a href="#" onClick={(e) => this.handleShowGamesClicked(e)}>
         {this.state.hideGamesPlayed ? "Show the Number of Games Played" : "Hide the Number of Games Played"}</a>
-        <div className="wrapper">
+        <ol>
           {userList} 
-        </div>
+        </ol>
      
       </div>
     );
   }
 }
+
+UserList.propTypes = {
+  users: PropTypes.array.isRequired
+};
 
 export default UserList;
